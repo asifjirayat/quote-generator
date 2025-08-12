@@ -73,14 +73,28 @@ const App = () => {
       className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <blockquote>{currentQuote.quote}</blockquote>
-      <cite>{currentQuote.author}</cite>
-      <button
-        className="mt-4 py-2 px-4 bg-blue-500 text-white rounded-md cursor-pointer"
-        onClick={handleNewQuote}
-      >
-        Get New Quote
-      </button>
+      {/* Overlay container */}
+      <div className="h-screen w-screen flex flex-col justify-center items-center bg-black/50 p-4 text-white">
+        {/* Content Container */}
+        <div className="flex flex-col items-center">
+          {/* Clock and Date */}
+          {/* Quote Text */}
+          <blockquote className="text-4xl font-light text-center leading-relaxed max-w-xl italic">
+            {currentQuote.quote}
+          </blockquote>
+          {/* Author */}
+          <cite className="mt-6 text-xl font-medium text-white/80">
+            - {currentQuote.author}
+          </cite>
+          {/* Button */}
+          <button
+            className="mt-12 px-6 py-3 bg-white/10 text-white font-medium rounded-full hover:bg-white/30 transition-colors duration-300"
+            onClick={handleNewQuote}
+          >
+            Get New Quote
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
