@@ -26,8 +26,9 @@ const quotesObject = [
 
 const App = () => {
   const [currentQuote, setCurrentQuote] = useState(quotesObject[0]);
+  const [bgImage, setBgImage] = useState("");
 
-  // Function to generate a random quote
+  // Helper function to generate a random quote
   const randomQuote = () => {
     // Generate a randomIndex
     const randomIndex = Math.floor(Math.random() * quotesObject.length);
@@ -37,12 +38,30 @@ const App = () => {
     setCurrentQuote(newQuote);
   };
 
-  // Handle side-effects for setTimeout
+  // Handle side-effects randomQuote
   useEffect(() => {
-    setTimeout(() => {
-      randomQuote();
-    }, 1500);
-  }, []);
+    randomQuote();
+  }, []); // Run only once on mount
+
+  // Fetch random image from unsplash API
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const accessKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
+        const response = await fetch(
+          `https://api.unsplash.com/photos/random?query=nature&client_id=${accessKey}`
+        );
+        const data = await response.json();
+        setBgImage(data.urls.full);
+      } catch (error) {
+        console.error("Failed to fetch image: ", error);
+        // Set a default background if API fails
+        setBgImage("https://via.placeholder.com/1920x1080?text=Error");
+      }
+    };
+
+    fetchImage();
+  }, []); // Run only once on mount
 
   // Handle new quote request on click
   const handleNewQuote = () => {
@@ -50,7 +69,10 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col bg-blue-50 p-5 justify-center items-center">
+    <div
+      className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
       <blockquote>{currentQuote.quote}</blockquote>
       <cite>{currentQuote.author}</cite>
       <button
