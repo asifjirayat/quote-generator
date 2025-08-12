@@ -103,7 +103,13 @@ const App = () => {
         <div className="flex justify-between w-full pb-8 px-4 text-sm">
           {/* Credits */}
           <div>
-            App by <strong>Asif Jirayat</strong>
+            <Button
+              as="a"
+              href="https://github.com/asifjirayat"
+              target="_blank"
+            >
+              Made by <strong>Asif Jirayat</strong>
+            </Button>
           </div>
           {/* Image Credit */}
           <div>
