@@ -2,7 +2,7 @@ const QuoteBlock = ({ quote, author }) => {
   return (
     <>
       {/* Quote Text */}
-      <blockquote className="text-4xl font-light text-center leading-relaxed max-w-xl italic">
+      <blockquote className="text-4xl font-light text-center leading-relaxed max-w-3xl italic">
         {quote}
       </blockquote>
       {/* Author */}
