@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import Background from "./components/Background.jsx";
+import QuoteBlock from "./components/QuoteBlock.jsx";
+import Button from "./components/Button.jsx";
+
 const quotesObject = [
   {
     quote: "The only way to do great work is to love what you do.",
@@ -27,6 +31,7 @@ const quotesObject = [
 const App = () => {
   const [currentQuote, setCurrentQuote] = useState(quotesObject[0]);
   const [bgImage, setBgImage] = useState("");
+  const [imageAuthor, setImageAuthor] = useState({ name: "", url: "" });
 
   // Helper function to generate a random quote
   const randomQuote = () => {
@@ -53,10 +58,19 @@ const App = () => {
         );
         const data = await response.json();
         setBgImage(data.urls.full);
+        // Store author name and URL
+        setImageAuthor({
+          name: data.user.name,
+          url: data.user.links.html,
+        });
       } catch (error) {
         console.error("Failed to fetch image: ", error);
         // Set a default background if API fails
         setBgImage("https://via.placeholder.com/1920x1080?text=Error");
+        setImageAuthor({
+          name: "Placeholder",
+          url: "#",
+        });
       }
     };
 
@@ -69,33 +83,21 @@ const App = () => {
   };
 
   return (
-    <div
-      className="h-screen w-screen flex justify-center items-center bg-cover bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      {/* Overlay container */}
-      <div className="h-screen w-screen flex flex-col justify-center items-center bg-black/50 p-4 text-white">
-        {/* Content Container */}
-        <div className="flex flex-col items-center">
-          {/* Clock and Date */}
-          {/* Quote Text */}
-          <blockquote className="text-4xl font-light text-center leading-relaxed max-w-xl italic">
-            {currentQuote.quote}
-          </blockquote>
-          {/* Author */}
-          <cite className="mt-6 text-xl font-medium text-white/80">
-            - {currentQuote.author}
-          </cite>
+    <Background bgImage={bgImage}>
+      {/* Content Container */}
+      <div className="flex flex-col items-center">
+        {/* Clock and Date */}
+        <QuoteBlock quote={currentQuote.quote} author={currentQuote.author} />
+        <div className="flex items-center space-x-4 mt-12 ">
           {/* Button */}
-          <button
-            className="mt-12 px-6 py-3 bg-white/10 text-white font-medium rounded-full hover:bg-white/30 transition-colors duration-300"
-            onClick={handleNewQuote}
-          >
-            Get New Quote
-          </button>
+          <Button onHandleNewQuote={handleNewQuote}>New Quote</Button>
+          {/* Image credit button */}
+          <Button as="a" href={imageAuthor.url} target="_blank">
+            Image by {imageAuthor.name}
+          </Button>
         </div>
       </div>
-    </div>
+    </Background>
   );
 };
 
