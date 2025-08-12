@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Background from "./components/Background.jsx";
 import QuoteBlock from "./components/QuoteBlock.jsx";
 import Button from "./components/Button.jsx";
+import Clock from "./components/Clock.jsx";
 
 const quotesObject = [
   {
@@ -84,17 +85,32 @@ const App = () => {
 
   return (
     <Background bgImage={bgImage}>
-      {/* Content Container */}
-      <div className="flex flex-col items-center">
-        {/* Clock and Date */}
-        <QuoteBlock quote={currentQuote.quote} author={currentQuote.author} />
-        <div className="flex items-center space-x-4 mt-12 ">
+      <div className="h-screen w-screen flex flex-col justify-between items-center p-4 text-white">
+        {/* Top: Clock and Date */}
+        <div className="pt-8">
+          <Clock />
+        </div>
+
+        {/* Middle: Quote */}
+        <div className="flex flex-col items-center">
+          {/* Quote Block */}
+          <QuoteBlock quote={currentQuote.quote} author={currentQuote.author} />
           {/* Button */}
           <Button onHandleNewQuote={handleNewQuote}>New Quote</Button>
-          {/* Image credit button */}
-          <Button as="a" href={imageAuthor.url} target="_blank">
-            Image by {imageAuthor.name}
-          </Button>
+        </div>
+
+        {/* Bottom: Credits */}
+        <div className="flex justify-between w-full pb-8 px-4 text-sm">
+          {/* Credits */}
+          <div>
+            App by <strong>Asif Jirayat</strong>
+          </div>
+          {/* Image Credit */}
+          <div>
+            <Button as="a" href={imageAuthor.url} target="_blank">
+              Image by {imageAuthor.name}
+            </Button>
+          </div>
         </div>
       </div>
     </Background>
